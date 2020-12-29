@@ -1,0 +1,3 @@
+rootProject.name = 'processcontrol'
+include 'uu_processcontrol_maing01-server'
+include 'uu_processcontrol_maing01-hi'
