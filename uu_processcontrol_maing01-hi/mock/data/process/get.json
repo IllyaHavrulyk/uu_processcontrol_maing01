@@ -1,0 +1,30 @@
+{
+  "id": "12345678",
+  "startTime": "20-12-2020",
+  "endTime": "25-12-2020",
+  "phases": {
+    "itemList" : [
+      {
+        "name": "Receiving",
+        "code": "RECEIVING",
+        "start": "20-12-2020",
+        "end": "20-12-2020",
+        "status": "INIT"
+      },
+      {
+        "name": "Validating",
+        "code": "VALIDATING",
+        "start": "20-12-2020",
+        "end": "20-12-2020",
+        "status": "RUNNING"
+      },
+      {
+        "name": "Moderating",
+        "code": "MODERATING",
+        "start": "20-12-2020",
+        "end": "20-12-2020",
+        "status": "INIT"
+      }
+    ]
+  }
+}

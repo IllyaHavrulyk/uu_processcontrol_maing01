@@ -1,0 +1,49 @@
+{
+  "itemList": [
+    {
+      "_id": "1",
+      "sender" : "Illya Havrulyk",
+      "receiver": "Tymofi Lanevych",
+      "metadata": "metadata from xml",
+      "valid": "true",
+      "domain": "somedomain.com",
+      "filename": "somefile.xml"
+    },
+    {
+      "_id": "1",
+      "sender" : "Illya Havrulyk",
+      "receiver": "Tymofi Lanevych",
+      "metadata": "metadata from xml",
+      "valid": "null",
+      "filename": "somefile2.xml",
+      "domain": "somedomain2.com"
+    },
+    {
+      "_id": "2",
+      "sender" : "Some Sender",
+      "receiver": "Some Receiver",
+      "metadata": "some metadata",
+      "valid": "false",
+      "filename": "somefile3.xml",
+      "domain": "somedomain3.com"
+    },
+    {
+      "_id": "3",
+      "sender" : "Roma teamlead",
+      "receiver": "Roma frontendshik",
+      "metadata": "Yakas metadata",
+      "valid": "true",
+      "domain": "somedomain4.com",
+      "filename": "somefile4.xml"
+    },
+    {
+      "_id": "4",
+      "sender" : "Petro Mostavchuk",
+      "receiver": "Rapper FACE",
+      "metadata": "rap rap",
+      "valid": "false",
+      "filename": "somefile4.xml",
+      "domain": "somedomain4.com"
+    }
+  ]
+}

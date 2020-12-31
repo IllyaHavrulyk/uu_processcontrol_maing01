@@ -9,6 +9,7 @@ let Calls = {
   APP_BASE_URI: location.protocol + "//" + location.host + UU5.Environment.getAppBasePath(),
 
   async call(method, url, dtoIn, clientOptions) {
+    console.log("url ----", url);
     let response = await Plus4U5.Common.Calls.call(method, url, dtoIn, clientOptions);
     return response.data;
   },
@@ -31,6 +32,17 @@ let Calls = {
   getWorkspace() {
     let commandUri = Calls.getCommandUri("sys/uuAppWorkspace/get");
     return Calls.call("get", commandUri, {});
+  },
+
+  metadataList(){
+    let commandUri = Calls.getCommandUri("metadata/list");
+    console.log("call metadata/list --- ", commandUri);
+    return Calls.call("get", commandUri, null, {});
+  },
+
+  processGet(){
+    let commandUri = Calls.getCommandUri("process/get");
+    return Calls.call("get", commandUri, null, {});
   },
 
   async initAndGetWorkspace(dtoInData) {
