@@ -23,7 +23,7 @@
       "sender" : "Some Sender",
       "receiver": "Some Receiver",
       "metadata": "some metadata",
-      "valid": "false",
+      "valid": "true",
       "filename": "somefile3.xml",
       "domain": "somedomain3.com"
     },
@@ -32,7 +32,7 @@
       "sender" : "Roma teamlead",
       "receiver": "Roma frontendshik",
       "metadata": "Yakas metadata",
-      "valid": "true",
+      "valid": "null",
       "domain": "somedomain4.com",
       "filename": "somefile4.xml"
     },

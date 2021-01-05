@@ -11,7 +11,10 @@
     "profileList": ["Authorities", "Executives", "AwidOwner"],
     "useCaseMap": {
       "init": ["AwidOwner"],
-      "defaultUve": ["Public"]
+      "defaultUve": ["Public"],
+      "process/start": ["Authorities", "Executives", "AwidOwner"],
+      "process/get" : ["Authorities", "Executives", "AwidOwner"],
+      "process/list" : ["Authorities", "Executives", "AwidOwner"]
     }
   }
 }

@@ -9,21 +9,21 @@
         "code": "RECEIVING",
         "start": "20-12-2020",
         "end": "20-12-2020",
-        "status": "INIT"
+        "status": "OK"
       },
       {
         "name": "Validating",
         "code": "VALIDATING",
         "start": "20-12-2020",
         "end": "20-12-2020",
-        "status": "RUNNING"
+        "status": "OK"
       },
       {
         "name": "Moderating",
         "code": "MODERATING",
         "start": "20-12-2020",
         "end": "20-12-2020",
-        "status": "INIT"
+        "status": "RUNNING"
       }
     ]
   }

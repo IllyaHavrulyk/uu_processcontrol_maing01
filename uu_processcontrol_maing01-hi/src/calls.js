@@ -40,9 +40,19 @@ let Calls = {
     return Calls.call("get", commandUri, null, {});
   },
 
-  processGet(){
+  processGet(dtoIn){
     let commandUri = Calls.getCommandUri("process/get");
-    return Calls.call("get", commandUri, null, {});
+    return Calls.call("get",commandUri,dtoIn)
+  },
+
+  processStart(dtoIn){
+    let commandUri = Calls.getCommandUri("process/start");
+    return Calls.call("post", commandUri, dtoIn);
+  },
+
+  processList(dtoIn){
+    let commandUri = Calls.getCommandUri("process/list");
+    return Calls.call("get", commandUri, dtoIn);
   },
 
   async initAndGetWorkspace(dtoInData) {
