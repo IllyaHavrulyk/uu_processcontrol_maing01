@@ -8,10 +8,18 @@ let Calls = {
   /** URL containing app base, e.g. "https://uuos9.plus4u.net/vnd-app/awid/". */
   APP_BASE_URI: location.protocol + "//" + location.host + UU5.Environment.getAppBasePath(),
 
+  DATAMANAGEMENT_BASE_URI: "http://localhost:8083/uu-datamanagement-maing01/11111111111111111111111111111110/",
+
   async call(method, url, dtoIn, clientOptions) {
     console.log("url ----", url);
     let response = await Plus4U5.Common.Calls.call(method, url, dtoIn, clientOptions);
     return response.data;
+  },
+
+  metadataGet(dtoIn){
+    let metadataUri = Calls.call("get", "http://localhost:8083/uu-datamanagement-maing01/11111111111111111111111111111110/metadata/list", dtoIn,{ headers: {
+        "Access-Control-Allow-Origin": "*"
+      }})
   },
 
   loadDemoContent(dtoIn) {

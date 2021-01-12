@@ -14,7 +14,10 @@
       "defaultUve": ["Public"],
       "process/start": ["Authorities", "Executives", "AwidOwner"],
       "process/get" : ["Authorities", "Executives", "AwidOwner"],
-      "process/list" : ["Authorities", "Executives", "AwidOwner"]
+      "process/list" : ["Authorities", "Executives", "AwidOwner"],
+      "process/create" : ["Authorities", "Executives", "AwidOwner"],
+      "process/validate" : ["Authorities", "Executives", "AwidOwner"],
+      "process/update" : ["Authorities", "Executives", "AwidOwner"]
     }
   }
 }

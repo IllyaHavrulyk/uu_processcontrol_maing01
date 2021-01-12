@@ -7,6 +7,7 @@ import Calls from "../../calls";
 import MetadataList from "./metadata-list";
 import { useRef, useState ,  useEffect} from "uu5g04-hooks";
 import MetadataItem from "./metadata-item";
+import MetadataTestComponent from "./metadata-test-component";
 
 
 
@@ -44,6 +45,12 @@ export const HomePage = createComponent({
     const formRef = useRef();
     const [alertModerated,setAlertModerated] = useState();
     const processData = props.data[0];
+    const requestData = {
+      pageInfo: {
+        pageSize: 5,
+        pageIndex: 0
+      }
+    }
     function openModalUploadFile() {
       fileUploadModal.open({
         header: "Upload File",
@@ -83,6 +90,11 @@ export const HomePage = createComponent({
         .catch((error)=>{
           console.log("Failed to start process");
         })
+    }
+
+    function getMetadata(){
+      console.log("Metadata log.");
+      console.log(Calls.metadataGet());
     }
 
     let receivingRunning = processData.phases[0].status == "RUNNING";
@@ -127,6 +139,8 @@ export const HomePage = createComponent({
             {console.log("Receiving ---", processData.phases[0].status == "RUNNING")}
             <UU5.Bricks.Button colorSchema="blue" content="Upload File" size="xl"  onClick={openModalUploadFile} disabled={!receivingRunning}/>
           </UU5.Bricks.Column>
+
+          <UU5.Bricks.Button onClick={ getMetadata()} content="Get metadata from."/>
 </UU5.Bricks.Row>
         {/*<UU5.Common.ListDataManager*/}
         {/*  onLoad={Calls.metadataList}*/}
@@ -147,6 +161,25 @@ export const HomePage = createComponent({
         {/*  }}*/}
 
         {/*</UU5.Common.ListDataManager>*/}
+
+        <UU5.Common.ListDataManager
+          onLoad={Calls.metadataGet}
+          data={requestData}
+        >
+          {({ viewState, errorState, errorData, data, pageInfo }) => {
+            if (errorState) {
+              return <Error data={errorData} errorState={errorState} />;
+            }else if (data) {
+              return <MetadataTestComponent
+                data={data}
+                pageInfo={pageInfo}
+                />
+            }else{
+                return <UU5.Bricks.Loading />
+              }
+            }
+          }
+        </UU5.Common.ListDataManager>
 
       </UU5.Bricks.Container>
     )

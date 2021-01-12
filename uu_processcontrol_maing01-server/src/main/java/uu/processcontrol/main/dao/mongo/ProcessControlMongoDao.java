@@ -10,7 +10,7 @@ import uu.app.objectstore.mongodb.dao.UuObjectMongoDao;
 import uu.processcontrol.main.abl.entity.ProcessControl;
 import uu.processcontrol.main.dao.ProcessControlDao;
 
-@ObjectStoreDao(entity = ProcessControl.class, store = "primary", concurrency = ConcurrencyStrategy.NONE, maxNoi = 1)
+@ObjectStoreDao(entity = ProcessControl.class, store = "primary", concurrency = ConcurrencyStrategy.NONE)
 public class ProcessControlMongoDao extends UuObjectMongoDao<ProcessControl> implements ProcessControlDao {
 
   @Override

@@ -15,3 +15,16 @@ const ProcessControlGetDtoInType = shape({
 const ProcessControlListDtoInType = shape({
 
 })
+
+const ProcessControlCreateSingleDtoInType = shape({
+
+})
+
+const ProcessControlValidateDtoInType = shape({
+
+})
+
+const ProcessControlUpdateDtoInType = shape({
+
+})
+

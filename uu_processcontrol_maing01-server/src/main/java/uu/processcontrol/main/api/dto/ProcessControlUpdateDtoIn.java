@@ -2,22 +2,15 @@ package uu.processcontrol.main.api.dto;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import uu.app.dto.AbstractDtoOut;
+import uu.app.validation.ValidationType;
 import uu.processcontrol.main.abl.entity.Phase;
 
-public class ProcessControlDtoOut extends AbstractDtoOut {
+@ValidationType("ProcessControlUpdateDtoInType")
+public class ProcessControlUpdateDtoIn{
   private String id;
   private ZonedDateTime startTime;
   private ZonedDateTime endTime;
   private List<Phase> phases;
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
 
   public ZonedDateTime getStartTime() {
     return startTime;
@@ -42,4 +35,13 @@ public class ProcessControlDtoOut extends AbstractDtoOut {
   public void setPhases(List<Phase> phases) {
     this.phases = phases;
   }
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+
 }

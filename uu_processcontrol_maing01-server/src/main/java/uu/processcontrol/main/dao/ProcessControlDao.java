@@ -22,4 +22,7 @@ public interface ProcessControlDao extends UuObjectDao<ProcessControl> {
 
   @Override
   void delete(String awid, String id) throws DatastoreRuntimeException, DatastoreUnexpectedRuntimeException, DatastoreConcurrencyRuntimeException;
+
+  @Override
+  ProcessControl update(ProcessControl entity) throws DatastoreRuntimeException, DatastoreUnexpectedRuntimeException, DatastoreConcurrencyRuntimeException;
 }
