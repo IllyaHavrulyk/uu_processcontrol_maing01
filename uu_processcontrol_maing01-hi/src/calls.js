@@ -63,6 +63,10 @@ let Calls = {
     return Calls.call("get", commandUri, dtoIn);
   },
 
+  exportGSKDocumentToZip(dtoIn) {
+    return Calls.call("get", "http://localhost:8083/uu-datamanagement-maing01/00000000000000000000000000000000-11111111111111111111111111111110/export", dtoIn);
+  },
+
   async initAndGetWorkspace(dtoInData) {
     await Calls.initWorkspace(dtoInData);
     return await Calls.getWorkspace();

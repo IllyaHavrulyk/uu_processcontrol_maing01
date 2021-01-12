@@ -5,11 +5,9 @@ import Config from "./config/config";
 import "./style/home-page.less";
 import Calls from "../../calls";
 import MetadataList from "./metadata-list";
-import { useRef, useState ,  useEffect} from "uu5g04-hooks";
+import { useRef, useState, useEffect } from "uu5g04-hooks";
 import MetadataItem from "./metadata-item";
 import MetadataTestComponent from "./metadata-test-component";
-
-
 
 //@@viewOff:imports
 
@@ -41,9 +39,10 @@ export const HomePage = createComponent({
 
     const [fileUploadModal, setFileUploadModal] = useState();
     const [startProcessAlert, setStartProcessAlert] = useState();
-    const [modal,setModal] = useState();
+    const [modal, setModal] = useState();
+    const [byteForZip, setByteForZip] = useState();
     const formRef = useRef();
-    const [alertModerated,setAlertModerated] = useState();
+    const [alertModerated, setAlertModerated] = useState();
     const processData = props.data[0];
     const requestData = {
       pageInfo: {
@@ -51,6 +50,7 @@ export const HomePage = createComponent({
         pageIndex: 0
       }
     }
+
     function openModalUploadFile() {
       fileUploadModal.open({
         header: "Upload File",
@@ -79,25 +79,45 @@ export const HomePage = createComponent({
       fileUploadModal.close();
     };
 
-    function startProcess(requestObj){
+    function startProcess(requestObj) {
       console.log(requestObj);
       Calls.processStart({ id: requestObj })
-        .then((data)=>{
-          UU5.Environment.
-          getRouter().
-          setRoute("");
+        .then((data) => {
+          UU5.Environment.getRouter().setRoute("");
         })
-        .catch((error)=>{
+        .catch((error) => {
           console.log("Failed to start process");
         })
     }
 
-    function getMetadata(){
+    function getMetadata() {
       console.log("Metadata log.");
       console.log(Calls.metadataGet());
     }
 
-    let receivingRunning = processData.phases[0].status == "RUNNING";
+    async function getExportBytes() {
+      await Calls.exportGSKDocumentToZip().then((result) => {
+        setByteForZip((result.byteList));
+      });
+
+      const blob = new Blob([Uint8Array.from(byteForZip)], { type: "octet/stream" });
+      const fileName = `exportResult.zip`;
+
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        console.log(url);
+        link.setAttribute('href', url);
+        link.setAttribute('download', fileName);
+        link.style.visibility = 'hidden';
+        console.log({ link })
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+
+    let receivingRunning = processData.phases[0].status === "RUNNING";
     //@@viewOff:private
 
     //@@viewOn:interface
@@ -117,31 +137,31 @@ export const HomePage = createComponent({
         <UU5.Bricks.Row>
           <UU5.Bricks.Column colWidth="m-4">
             <UU5.Bricks.AlertBus ref_={item => setStartProcessAlert(item)} position="center"/>
-            <UU5.Bricks.Button colorSchema="blue" content="Start Process" size="xl" className="process-btn" onClick={ () => {
+            <UU5.Bricks.Button colorSchema="blue" content="Start Process" size="xl" className="process-btn" onClick={() => {
               startProcess(props.data[0].id);
-              startProcessAlert.addAlert({ content : "Process Started" , colorSchema: "green"});
+              startProcessAlert.addAlert({ content: "Process Started", colorSchema: "green" });
             }}/>
-            <UU5.Bricks.Button colorSchema="success" content="Export" size="xl" className="process-btn"/>
+            <UU5.Bricks.Button colorSchema="success" content="Export" onClick={getExportBytes} size="xl" className="process-btn"/>
           </UU5.Bricks.Column>
 
           <UU5.Bricks.Column colWidth="m-6" classname="uu-padding-30" style="margin: 0 0 0 -3vw;">
-            <UU5.Bricks.Table >
+            <UU5.Bricks.Table>
               <UU5.Bricks.Table.TBody>
                 <UU5.Bricks.Table.Tr>
-                  <UU5.Bricks.Table.Td content='Receiving' className={"home-page-phase " + processData.phases[0].status.toLowerCase() + "-state" } />
-                  <UU5.Bricks.Table.Td content='Validating' className={"home-page-phase " + processData.phases[1].status.toLowerCase() + "-state" }/>
-                  <UU5.Bricks.Table.Td content='Moderating' className={"home-page-phase " + processData.phases[2].status.toLowerCase() + "-state" }/>
+                  <UU5.Bricks.Table.Td content='Receiving' className={"home-page-phase " + processData.phases[0].status.toLowerCase() + "-state"}/>
+                  <UU5.Bricks.Table.Td content='Validating' className={"home-page-phase " + processData.phases[1].status.toLowerCase() + "-state"}/>
+                  <UU5.Bricks.Table.Td content='Moderating' className={"home-page-phase " + processData.phases[2].status.toLowerCase() + "-state"}/>
                 </UU5.Bricks.Table.Tr>
               </UU5.Bricks.Table.TBody>
             </UU5.Bricks.Table></UU5.Bricks.Column>
           <UU5.Bricks.Column colWidth="m-2">
-            <UU5.Bricks.Modal ref_={(modal) => setFileUploadModal(modal)} />
+            <UU5.Bricks.Modal ref_={(modal) => setFileUploadModal(modal)}/>
             {console.log("Receiving ---", processData.phases[0].status == "RUNNING")}
-            <UU5.Bricks.Button colorSchema="blue" content="Upload File" size="xl"  onClick={openModalUploadFile} disabled={!receivingRunning}/>
+            <UU5.Bricks.Button colorSchema="blue" content="Upload File" size="xl" onClick={openModalUploadFile} disabled={!receivingRunning}/>
           </UU5.Bricks.Column>
 
-          <UU5.Bricks.Button onClick={ getMetadata()} content="Get metadata from."/>
-</UU5.Bricks.Row>
+          <UU5.Bricks.Button onClick={getMetadata()} content="Get metadata from."/>
+        </UU5.Bricks.Row>
         {/*<UU5.Common.ListDataManager*/}
         {/*  onLoad={Calls.metadataList}*/}
         {/*  onReload={Calls.metadataList}*/}
@@ -168,16 +188,16 @@ export const HomePage = createComponent({
         >
           {({ viewState, errorState, errorData, data, pageInfo }) => {
             if (errorState) {
-              return <Error data={errorData} errorState={errorState} />;
-            }else if (data) {
+              return <Error data={errorData} errorState={errorState}/>;
+            } else if (data) {
               return <MetadataTestComponent
                 data={data}
                 pageInfo={pageInfo}
-                />
-            }else{
-                return <UU5.Bricks.Loading />
-              }
+              />
+            } else {
+              return <UU5.Bricks.Loading/>
             }
+          }
           }
         </UU5.Common.ListDataManager>
 
