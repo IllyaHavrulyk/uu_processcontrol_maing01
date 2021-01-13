@@ -27,7 +27,7 @@ export const Cover = createComponent({
     //@@viewOn:private
     const dataManagerRef = useRef();
     useEffect(() => {
-      const intervalKey = setInterval(() => dataManagerRef.current && dataManagerRef.current.reload({}), 10000);
+      const intervalKey = setInterval(() => dataManagerRef.current && dataManagerRef.current.reload({}), 30000);
       console.log("Current ---", dataManagerRef.current)
       return () => clearInterval(intervalKey)
     }, [])

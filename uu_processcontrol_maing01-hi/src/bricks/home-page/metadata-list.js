@@ -37,7 +37,8 @@ export const MetadataList = createComponent({
 
     let showAllMetadata = (data) =>{
       return(
-       <MetadataItem data={data} moderatingEnabled={props.moderatingEnabled}/>
+       <MetadataItem  data={data} moderatingEnabled={props.moderatingEnabled} intervalKey={props.intervalKey} clearModalInterval={props.clearModalInterval}
+                      setModalInterval={props.setModalInterval}/>
       )
     }
     return(

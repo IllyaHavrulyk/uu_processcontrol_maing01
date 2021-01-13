@@ -1,21 +1,13 @@
 package uu.processcontrol.main.abl.entity;
 
 public enum PhaseCode {
-  Receiving("Receiving"),
-  Validation("Validation"),
-  Moderating("Moderating");
+  RECEIVING("RECEIVING"),
+  VALIDATION("VALIDATION"),
+  MODERATING("MODERATING");
 
-  private String code;
+  String code;
 
   PhaseCode(String code) {
-    this.code = code;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public void setCode(String code) {
     this.code = code;
   }
 }

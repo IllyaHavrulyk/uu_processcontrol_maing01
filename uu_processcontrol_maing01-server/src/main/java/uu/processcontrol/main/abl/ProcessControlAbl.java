@@ -3,9 +3,11 @@ package uu.processcontrol.main.abl;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.inject.Inject;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import uu.app.datastore.concurrency.Lock;
 import uu.app.datastore.domain.PagedResult;
 import uu.app.datastore.exceptions.DatastoreIdentityRuntimeException;
 import uu.app.datastore.exceptions.DatastoreRuntimeException;
@@ -55,6 +57,11 @@ public class ProcessControlAbl {
       throw new ProcessControlRuntimeException(Error.INVALID_DTO_IN, ValidationResultUtils.validationResultToAppErrorMap(validationResult));
     }
 
+    // //for schedulers
+    // Lock lock = processControlMongoDao.createLock(UUID.randomUUID().toString());
+    // ProcessControl processControl1 = processControlMongoDao.lock(awid, dtoIn.getId(), lock);
+    // processControlMongoDao.unlock(lock);
+
     try {
       processControlMongoDao.delete(awid, dtoIn.getId());
     } catch (DatastoreIdentityRuntimeException e) {
@@ -75,7 +82,7 @@ public class ProcessControlAbl {
     receivingPhase.setStartTime(processStart);
     receivingPhase.setEndTime(processStart.plusMinutes(5));
     receivingPhase.setName("Receiving");
-    receivingPhase.setPhaseCode(PhaseCode.Receiving);
+    receivingPhase.setPhaseCode(PhaseCode.RECEIVING);
     receivingPhase.setStatus(PhaseStatus.RUNNING);
     phases.add(receivingPhase);
     //Setting validationPhase
@@ -83,7 +90,7 @@ public class ProcessControlAbl {
     validationPhase.setStartTime(receivingPhase.getEndTime());
     validationPhase.setEndTime(validationPhase.getStartTime().plusMinutes(2));
     validationPhase.setName("Validation");
-    validationPhase.setPhaseCode(PhaseCode.Validation);
+    validationPhase.setPhaseCode(PhaseCode.VALIDATION);
     validationPhase.setStatus(PhaseStatus.INIT);
     phases.add(validationPhase);
     //Setting moderatingPhase
@@ -91,7 +98,7 @@ public class ProcessControlAbl {
     moderatingPhase.setStartTime(validationPhase.getEndTime());
     moderatingPhase.setEndTime(moderatingPhase.getStartTime().plusMinutes(5));
     moderatingPhase.setName("Moderating");
-    moderatingPhase.setPhaseCode(PhaseCode.Moderating);
+    moderatingPhase.setPhaseCode(PhaseCode.MODERATING);
     moderatingPhase.setStatus(PhaseStatus.INIT);
     phases.add(moderatingPhase);
     //Setting phases for processControl
@@ -172,7 +179,7 @@ public class ProcessControlAbl {
     receivingPhase.setStartTime(processStart);
     receivingPhase.setEndTime(processStart.plusMinutes(5));
     receivingPhase.setName("Receiving");
-    receivingPhase.setPhaseCode(PhaseCode.Receiving);
+    receivingPhase.setPhaseCode(PhaseCode.RECEIVING);
     receivingPhase.setStatus(PhaseStatus.RUNNING);
     phases.add(receivingPhase);
     //Setting validationPhase
@@ -180,7 +187,7 @@ public class ProcessControlAbl {
     validationPhase.setStartTime(receivingPhase.getEndTime());
     validationPhase.setEndTime(validationPhase.getStartTime().plusMinutes(2));
     validationPhase.setName("Validation");
-    validationPhase.setPhaseCode(PhaseCode.Validation);
+    validationPhase.setPhaseCode(PhaseCode.VALIDATION);
     validationPhase.setStatus(PhaseStatus.INIT);
     phases.add(validationPhase);
     //Setting moderatingPhase
@@ -188,7 +195,7 @@ public class ProcessControlAbl {
     moderatingPhase.setStartTime(validationPhase.getEndTime());
     moderatingPhase.setEndTime(moderatingPhase.getStartTime().plusMinutes(5));
     moderatingPhase.setName("Moderating");
-    moderatingPhase.setPhaseCode(PhaseCode.Moderating);
+    moderatingPhase.setPhaseCode(PhaseCode.MODERATING);
     moderatingPhase.setStatus(PhaseStatus.INIT);
     phases.add(moderatingPhase);
     //Setting phases for processControl

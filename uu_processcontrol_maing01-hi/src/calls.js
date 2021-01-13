@@ -20,6 +20,12 @@ let Calls = {
     let metadataUri = Calls.call("get", "http://localhost:8083/uu-datamanagement-maing01/11111111111111111111111111111110/metadata/list", dtoIn,{ headers: {
         "Access-Control-Allow-Origin": "*"
       }})
+    return metadataUri;
+  },
+
+  metadataEdit(dtoIn){
+    let metadataUri = Calls.call("post", "http://localhost:8083/uu-datamanagement-maing01/11111111111111111111111111111110/metadata/update", dtoIn)
+    return metadataUri;
   },
 
   loadDemoContent(dtoIn) {
@@ -40,6 +46,12 @@ let Calls = {
   getWorkspace() {
     let commandUri = Calls.getCommandUri("sys/uuAppWorkspace/get");
     return Calls.call("get", commandUri, {});
+  },
+
+  metadataUploadFile(dtoIn){
+    let fileDtoOut = Calls.call("post", "http://localhost:8083/uu-datamanagement-maing01/11111111111111111111111111111110/gskdocument/create", dtoIn,{ headers: {
+        "content-type": "multipart/form-data"
+      }});
   },
 
   metadataList(){

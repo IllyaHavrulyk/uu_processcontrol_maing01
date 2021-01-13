@@ -7,7 +7,6 @@ import Calls from "../../calls";
 import MetadataList from "./metadata-list";
 import { useRef, useState, useEffect } from "uu5g04-hooks";
 import MetadataItem from "./metadata-item";
-import MetadataTestComponent from "./metadata-test-component";
 
 //@@viewOff:imports
 
@@ -29,13 +28,15 @@ export const HomePage = createComponent({
   //@@viewOff:defaultProps
 
   render(props) {
-    //@@viewOn:private
-    // const dataManagerRef = useRef();
-    // useEffect(() => {
-    //   const intervalKey = setInterval(() => dataManagerRef.current && dataManagerRef.current.reload({}), 5000);
-    //   console.log("Current ---", dataManagerRef.current)
-    //   return () => clearInterval(intervalKey)
-    // }, [])
+    // @@viewOn:private
+    const dataManagerRef = useRef();
+    const intervalRef = useRef();
+    useEffect(() => {
+      setModalInterval();
+      console.log("Current ---", dataManagerRef.current);
+      return clearModalInterval;
+    }, [])
+
 
     const [fileUploadModal, setFileUploadModal] = useState();
     const [startProcessAlert, setStartProcessAlert] = useState();
@@ -49,6 +50,13 @@ export const HomePage = createComponent({
         pageSize: 5,
         pageIndex: 0
       }
+    }
+
+    function clearModalInterval(){
+      clearInterval(intervalRef.current);
+    }
+    function setModalInterval(){
+      intervalRef.current = setInterval(() => dataManagerRef.current && dataManagerRef.current.reload({}), 2000);
     }
 
     function openModalUploadFile() {
@@ -70,14 +78,15 @@ export const HomePage = createComponent({
       })
     }
 
-    function _onSave(component, values) {
-      console.log("---------------------", formRef);
-      let value = formRef.current.getValue();
-      let formData = new FormData();
-      formData.append("data", value);
-      //let call = Calls.createZipBinary(formData);
-      fileUploadModal.close();
-    };
+
+      function _onSave(component, values) {
+        console.log("---------------------", formRef);
+        let value = formRef.current.getValue();
+        let formData = new FormData();
+        formData.append("document", value);
+        let call = Calls.metadataUploadFile(formData);
+        fileUploadModal.close();
+      };
 
     function startProcess(requestObj) {
       console.log(requestObj);
@@ -90,10 +99,6 @@ export const HomePage = createComponent({
         })
     }
 
-    function getMetadata() {
-      console.log("Metadata log.");
-      console.log(Calls.metadataGet());
-    }
 
     async function getExportBytes() {
       await Calls.exportGSKDocumentToZip().then((result) => {
@@ -159,47 +164,32 @@ export const HomePage = createComponent({
             {console.log("Receiving ---", processData.phases[0].status == "RUNNING")}
             <UU5.Bricks.Button colorSchema="blue" content="Upload File" size="xl" onClick={openModalUploadFile} disabled={!receivingRunning}/>
           </UU5.Bricks.Column>
-
-          <UU5.Bricks.Button onClick={getMetadata()} content="Get metadata from."/>
         </UU5.Bricks.Row>
-        {/*<UU5.Common.ListDataManager*/}
-        {/*  onLoad={Calls.metadataList}*/}
-        {/*  onReload={Calls.metadataList}*/}
-        {/*  ref_={(ref) => dataManagerRef.current = ref}*/}
-        {/*>*/}
-        {/*  {({ viewState, errorState, errorData, data }) => {*/}
-        {/*    if (errorState) {*/}
-        {/*      return <Error data={errorData} errorState={errorState} />;*/}
-        {/*    } else if (data) {*/}
-        {/*      return <MetadataList*/}
-        {/*        data={data}*/}
-        {/*        moderatingEnabled={processData.phases.itemList[2].status == "RUNNING"}*/}
-        {/*      />*/}
-        {/*    } else {*/}
-        {/*      return <UU5.Bricks.Loading />*/}
-        {/*    }*/}
-        {/*  }}*/}
-
-        {/*</UU5.Common.ListDataManager>*/}
 
         <UU5.Common.ListDataManager
           onLoad={Calls.metadataGet}
-          data={requestData}
+          onReload={Calls.metadataGet}
+          ref_={(ref) => dataManagerRef.current = ref}
         >
-          {({ viewState, errorState, errorData, data, pageInfo }) => {
+          {(b) => {
+            let { viewState, errorState, errorData, data } = b;
             if (errorState) {
-              return <Error data={errorData} errorState={errorState}/>;
+              return <Error data={errorData} errorState={errorState} />;
             } else if (data) {
-              return <MetadataTestComponent
+              return <MetadataList
                 data={data}
-                pageInfo={pageInfo}
+                moderatingEnabled={processData.phases[2].status == "RUNNING"}
+                intervalKey={null}
+                clearModalInterval={clearModalInterval}
+                setModalInterval={setModalInterval}
               />
             } else {
-              return <UU5.Bricks.Loading/>
+              return "No data found"
             }
-          }
-          }
+          }}
+
         </UU5.Common.ListDataManager>
+
 
       </UU5.Bricks.Container>
     )

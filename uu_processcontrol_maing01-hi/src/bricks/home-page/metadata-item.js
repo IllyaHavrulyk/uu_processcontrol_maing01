@@ -3,6 +3,7 @@ import UU5 from "uu5g04";
 import { createComponent } from "uu5g04-hooks";
 import Config from "./config/config";
 import { useRef, useState } from "uu5g04-hooks";
+import Calls from "../../calls";
 //@@viewOff:imports
 
 const STATICS = {
@@ -27,12 +28,26 @@ export const MetadataItem = createComponent({
     const formRef = useRef();
     const [moderateModal, setModerateModal] = useState();
     const [alertModerated,setAlertModerated] = useState();
-    function openModerateMetadata() {
+
+    function editMetadata(requestObj){
+      Calls.metadataEdit(requestObj);
+    }
+    function openModerateMetadata(shown) {
+      props.clearModalInterval();
       moderateModal.open({
         header: "Moderate Metadata",
         content: <UU5.Forms.Form
-          onSave={({ component, values }) => _onModerateSave(component, values)}
-          onCancel={() => moderateModal.close()}>
+          shown={shown}
+          onSave={(opt) => () => {
+            shown = false;
+            Calls.metadataEdit({ id: props.data.data.id, sender: opt.values.sender, receiver: opt.values.receiver, domain: opt.values.domain});
+            props.setModalInterval();
+            moderateModal.close();
+          }}
+          onCancel={() => {
+            shown = false;
+            moderateModal.close()}}
+        >
           <UU5.Forms.Text
             required
             name="receiver"
@@ -59,24 +74,24 @@ export const MetadataItem = createComponent({
       })
     }
 
-
+    let shown = false;
     function _onModerateSave(component, values) {
-      // Calls.createTopic(requestObj)
-      //   .then((data)=>{
-      //     UU5.Environment.
-      //     getRouter().
-      //     setRoute("list");
-      //   })
-      //   .catch((error)=>{
-      //     console.log("ooops...");
-      //   })
+      Calls.createTopic(requestObj)
+        .then((data)=>{
+          UU5.Environment.
+          getRouter().
+          setRoute("");
+        })
+        .catch((error)=>{
+          console.log("ooops...");
+        })
       alertModerated.addAlert({ content : "Metadata Moderated" , colorSchema: "green"});
       console.log("---------------------", formRef);
       moderateModal.close();
-      // let value = formRef.current.getValue();
-      // let formData = new FormData();
-      // formData.append("data", value);
-      // //let call = Calls.createZipBinary(formData);
+      let value = formRef.current.getValue();
+      let formData = new FormData();
+      formData.append("data", value);
+      //let call = Calls.createZipBinary(formData);
 
     };
 
@@ -119,11 +134,11 @@ export const MetadataItem = createComponent({
     return(
       <UU5.Bricks.Div className={"metadata-item " + showFileValidity(isValid)}>
         <UU5.Bricks.Row>
-          <UU5.Bricks.Column colWidth="m-2">
-            <UU5.Bricks.Header level={5} content={props.data.data.filename} style="margin: 0;" className="metadata-filename"/>
-          </UU5.Bricks.Column>
           <UU5.Bricks.Column colWidth="m-1">
             <UU5.Bricks.Icon icon={showValidIcon(isValid)} className={"home-page-icon " + showValidCssStyle(isValid)} />
+          </UU5.Bricks.Column>
+          <UU5.Bricks.Column colWidth="m-4">
+            <UU5.Bricks.Header level={6} content={props.data.data.fileName} style="margin: 0; font-size: 14px;" className="metadata-filename"/>
           </UU5.Bricks.Column>
           <UU5.Bricks.Column colWidth="m-2">
             <UU5.Bricks.Text content={props.data.data.receiver} className="metadata-filename"/>
@@ -132,15 +147,15 @@ export const MetadataItem = createComponent({
             <UU5.Bricks.Text content={props.data.data.sender} className="metadata-filename"/>
           </UU5.Bricks.Column>
 
-          <UU5.Bricks.Column colWidth="m-2">
-            <UU5.Bricks.Text content={props.data.data.metadata} className="metadata-filename"/>
-          </UU5.Bricks.Column>
 
           <UU5.Bricks.Column colWidth="m-2">
-            <UU5.Bricks.Modal ref_={(modal) => setModerateModal(modal)} />
+
             <UU5.Bricks.AlertBus ref_={item => setAlertModerated(item)} position="center"/>
-            {console.log(props.moderatingEnabled)}
-            <UU5.Bricks.Button colorSchema="success" content="Edit" size="xl" className="process-btn" onClick={openModerateMetadata} disabled={!props.moderatingEnabled}/>
+            <UU5.Bricks.Button colorSchema="success" content="Edit" size="xl" className="process-btn" onClick={ () => {
+              shown = true;
+              openModerateMetadata(shown);}
+            } disabled={!props.moderatingEnabled}/>
+            <UU5.Bricks.Modal ref_={(modal) => setModerateModal(modal)}/>
           </UU5.Bricks.Column>
         </UU5.Bricks.Row>
       </UU5.Bricks.Div>
