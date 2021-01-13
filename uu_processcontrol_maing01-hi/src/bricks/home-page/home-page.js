@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createComponent, useRef, useState } from "uu5g04-hooks";
+import { createComponent } from "uu5g04-hooks";
 import Config from "./config/config";
 import "./style/home-page.less";
 import Calls from "../../calls";
@@ -134,7 +134,7 @@ export const HomePage = createComponent({
               startProcess(props.data[0].id);
               startProcessAlert.addAlert({ content: "Process Started", colorSchema: "green" });
             }}/>
-            {getExportBytes}
+            <UU5.Bricks.Button colorSchema="success" content="Export" onClick={getExportBytes} size="xl" className="process-btn"/>
           </UU5.Bricks.Column>
 
           <UU5.Bricks.Column colWidth="m-6" classname="uu-padding-30" style="margin: 0 0 0 -3vw;">
