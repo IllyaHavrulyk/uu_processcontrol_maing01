@@ -1,13 +1,11 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createComponent } from "uu5g04-hooks";
+import { createComponent, useRef, useState } from "uu5g04-hooks";
 import Config from "./config/config";
 import "./style/home-page.less";
 import Calls from "../../calls";
-import MetadataList from "./metadata-list";
-import { useRef, useState, useEffect } from "uu5g04-hooks";
-import MetadataItem from "./metadata-item";
 import MetadataTestComponent from "./metadata-test-component";
+import { Uri } from "uu_appg01_core";
 
 //@@viewOff:imports
 
@@ -95,26 +93,21 @@ export const HomePage = createComponent({
       console.log(Calls.metadataGet());
     }
 
-    async function getExportBytes() {
-      await Calls.exportGSKDocumentToZip().then((result) => {
-        setByteForZip((result.byteList));
-      });
+    function getExportBytes() {
+      return <UU5.Bricks.Link
+        download={true}
+        href={getUriForExport()}
+      >
+        <UU5.Bricks.Button colorSchema="success" content="Export" size="xl" className="process-btn"/>
+      </UU5.Bricks.Link>
+    }
 
-      const blob = new Blob([Uint8Array.from(byteForZip)], { type: "octet/stream" });
-      const fileName = `exportResult.zip`;
-
-      const link = document.createElement('a');
-      if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        console.log(url);
-        link.setAttribute('href', url);
-        link.setAttribute('download', fileName);
-        link.style.visibility = 'hidden';
-        console.log({ link })
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    function getUriForExport() {
+      let uri = Uri.UriBuilder.parse(window.location.href);
+      if (uri.asid !== undefined) {
+        return "http://localhost:8083/uu-datamanagement-maing01/" + uri.asid + "-" + uri.awid + "/export";
       }
+      return "http://localhost:8083/uu-datamanagement-maing01/" + uri.awid + "/export";
     }
 
     let receivingRunning = processData.phases[0].status === "RUNNING";
@@ -141,7 +134,7 @@ export const HomePage = createComponent({
               startProcess(props.data[0].id);
               startProcessAlert.addAlert({ content: "Process Started", colorSchema: "green" });
             }}/>
-            <UU5.Bricks.Button colorSchema="success" content="Export" onClick={getExportBytes} size="xl" className="process-btn"/>
+            {getExportBytes}
           </UU5.Bricks.Column>
 
           <UU5.Bricks.Column colWidth="m-6" classname="uu-padding-30" style="margin: 0 0 0 -3vw;">
