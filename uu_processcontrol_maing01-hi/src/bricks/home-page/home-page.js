@@ -95,26 +95,13 @@ export const HomePage = createComponent({
       console.log(Calls.metadataGet());
     }
 
-    async function getExportBytes() {
-      await Calls.exportGSKDocumentToZip().then((result) => {
-        setByteForZip((result.byteList));
-      });
-
-      const blob = new Blob([Uint8Array.from(byteForZip)], { type: "octet/stream" });
-      const fileName = `exportResult.zip`;
-
-      const link = document.createElement('a');
-      if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        console.log(url);
-        link.setAttribute('href', url);
-        link.setAttribute('download', fileName);
-        link.style.visibility = 'hidden';
-        console.log({ link })
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
+    function getExportBytes() {
+      return <UU5.Bricks.Link
+        download={true}
+        href="http://localhost:8083/uu-datamanagement-maing01/00000000000000000000000000000000-11111111111111111111111111111110/export"
+      >
+        <UU5.Bricks.Button colorSchema="success" content="Export" size="xl" className="process-btn"/>
+      </UU5.Bricks.Link>
     }
 
     let receivingRunning = processData.phases[0].status === "RUNNING";
@@ -141,7 +128,7 @@ export const HomePage = createComponent({
               startProcess(props.data[0].id);
               startProcessAlert.addAlert({ content: "Process Started", colorSchema: "green" });
             }}/>
-            <UU5.Bricks.Button colorSchema="success" content="Export" onClick={getExportBytes} size="xl" className="process-btn"/>
+            {getExportBytes}
           </UU5.Bricks.Column>
 
           <UU5.Bricks.Column colWidth="m-6" classname="uu-padding-30" style="margin: 0 0 0 -3vw;">
