@@ -7,6 +7,8 @@ import Calls from "../../calls";
 import MetadataList from "./metadata-list";
 import { useRef, useState, useEffect } from "uu5g04-hooks";
 import MetadataItem from "./metadata-item";
+import MetadataTestComponent from "./metadata-test-component";
+import { Uri } from "uu_appg01_core";
 
 //@@viewOff:imports
 
@@ -100,26 +102,21 @@ export const HomePage = createComponent({
     }
 
 
-    async function getExportBytes() {
-      await Calls.exportGSKDocumentToZip().then((result) => {
-        setByteForZip((result.byteList));
-      });
+    function getExportBytes() {
+      return <UU5.Bricks.Link
+        download={true}
+        href={getUriForExport()}
+      >
+        <UU5.Bricks.Button colorSchema="success" content="Export" size="xl" className="process-btn"/>
+      </UU5.Bricks.Link>
+    }
 
-      const blob = new Blob([Uint8Array.from(byteForZip)], { type: "octet/stream" });
-      const fileName = `exportResult.zip`;
-
-      const link = document.createElement('a');
-      if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        console.log(url);
-        link.setAttribute('href', url);
-        link.setAttribute('download', fileName);
-        link.style.visibility = 'hidden';
-        console.log({ link })
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    function getUriForExport() {
+      let uri = Uri.UriBuilder.parse(window.location.href);
+      if (uri.asid !== undefined) {
+        return "http://localhost:8083/uu-datamanagement-maing01/" + uri.asid + "-" + uri.awid + "/export";
       }
+      return "http://localhost:8083/uu-datamanagement-maing01/" + uri.awid + "/export";
     }
 
     let receivingRunning = processData.phases[0].status === "RUNNING";
