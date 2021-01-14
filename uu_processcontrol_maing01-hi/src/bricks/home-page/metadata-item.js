@@ -30,19 +30,19 @@ export const MetadataItem = createComponent({
     const [alertModerated,setAlertModerated] = useState();
     function openModerateMetadata(shown) {
       props.clearModalInterval();
-      console.log("CLEARED INTERVAL");
+
       moderateModal.open({
         header: "Moderate Metadata",
         content: <UU5.Forms.Form
           onSave={(opt) => {
-            console.log("SAVED SAVEs AWDWAD")
+
             Calls.metadataEdit({ id: props.data.data.id, sender: opt.values.sender, receiver: opt.values.receiver, domain: opt.values.domain});
             props.setModalInterval();
             moderateModal.close();
           }}
           onCancel={() => {
             shown = false;
-            console.log("SAVED SAVEs");
+
             props.setModalInterval();
             moderateModal.close()}}
         >

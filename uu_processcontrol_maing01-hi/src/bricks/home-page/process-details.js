@@ -51,7 +51,17 @@ export const ProcessDetails = createComponent({
 
     const processData = props.data[0];
     let receivingRunning = processData.phases[0].status === "RUNNING";
+    let validationRunning = processData.phases[1].status === "RUNNING";
+    let moderatingRunning = processData.phases[2].status === "RUNNING";
 
+    function isProcessEnded(){
+      if(processData.phases[0].status === "OK" && processData.phases[1].status === "OK" && processData.phases[2].status === "OK"){
+        return true;
+      }else if(processData.phases[0].status === "NOTOK" || processData.phases[1].status === "NOTOK" || processData.phases[2].status === "NOTOK"){
+        return false;
+      }
+      return false;
+    }
 
     function _onSave(component, values) {
       console.log("---------------------", formRef);
@@ -83,7 +93,7 @@ export const ProcessDetails = createComponent({
         download={true}
         href={getUriForExport()}
       >
-        <UU5.Bricks.Button colorSchema="success" content="Export" size="xl" className="process-btn"/>
+        <UU5.Bricks.Button colorSchema="success" content="Export" size="xl" className="process-btn" disabled={!(isProcessEnded())}/>
       </UU5.Bricks.Link>
     }
 
@@ -101,6 +111,7 @@ export const ProcessDetails = createComponent({
 
     //@@viewOn:render
     return(
+
       <div>
         <UuP.Bricks.RouteContent
           level="3"
@@ -131,7 +142,6 @@ export const ProcessDetails = createComponent({
             </UU5.Bricks.Table></UU5.Bricks.Column>
           <UU5.Bricks.Column colWidth="m-2">
             <UU5.Bricks.Modal ref_={(modal) => setFileUploadModal(modal)}/>
-            {console.log("Receiving ---", processData.phases[0].status == "RUNNING")}
             <UU5.Bricks.Button colorSchema="blue" content="Upload File" size="xl" onClick={openModalUploadFile} disabled={!receivingRunning}/>
           </UU5.Bricks.Column>
         </UU5.Bricks.Row>

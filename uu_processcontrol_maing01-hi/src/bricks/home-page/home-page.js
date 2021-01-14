@@ -33,8 +33,7 @@ export const HomePage = createComponent({
     // @@viewOn:private
     const dataManagerProcessRef = useRef();
     useEffect(() => {
-      const intervalKey = setInterval(() => dataManagerProcessRef.current && dataManagerProcessRef.current.reload({}), 30000);
-      console.log("Current ---", dataManagerRef.current)
+      const intervalKey = setInterval(() => dataManagerProcessRef.current && dataManagerProcessRef.current.reload({}), 3000);
       return () => clearInterval(intervalKey)
     }, [])
 
@@ -52,7 +51,6 @@ export const HomePage = createComponent({
     const intervalRef = useRef();
     useEffect(() => {
       setModalInterval();
-      console.log("Current ---", dataManagerRef.current);
       return clearModalInterval;
     }, [])
 
@@ -101,7 +99,6 @@ export const HomePage = createComponent({
         >
           {({ viewState, errorState, errorData, data , pageInfo}) => {
             if (errorState) {
-              console.log(data);
               return <Error data={errorData} errorState={errorState}/>;
             } else if (data) {
               return <ProcessDetails

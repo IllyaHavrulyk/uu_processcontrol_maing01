@@ -14,7 +14,7 @@ public class ValidationCheckHelper {
     if(validationPhase.getStatus().equals(PhaseStatus.INIT) && now.isAfter(validationPhase.getStartTime()) && now.isBefore(validationPhase.getEndTime())){
       validationPhase.setStatus(PhaseStatus.RUNNING);
     }
-    //here will be validation result and if validation result have some messages
+    //here will be validation result and if validation result have some messages we end whole process
     //Also here will be updating of process with data
     validationPhase.setStatus(PhaseStatus.OK);
     return validationPhase;
@@ -24,12 +24,12 @@ public class ValidationCheckHelper {
     ZonedDateTime now = ZonedDateTime.now();
     Phase moderationPhase = processControl.getPhases().get(2);
     Phase validationPhase = processControl.getPhases().get(1);
-    if(validationPhase.getStatus().equals(PhaseStatus.OK)
-      && now.isBefore(moderationPhase.getEndTime())
-      && now.isAfter(moderationPhase.getStartTime())
-      && moderationPhase.getStatus().equals(PhaseStatus.INIT)
-    ){
+    if(moderationPhase.getStatus().equals(PhaseStatus.INIT) && now.isAfter(moderationPhase.getStartTime()) && now.isBefore(moderationPhase.getEndTime()) && validationPhase.getStatus().equals(PhaseStatus.OK)){
       moderationPhase.setStatus(PhaseStatus.RUNNING);
+    }
+
+    if(moderationPhase.getStatus().equals(PhaseStatus.RUNNING) && now.isAfter(moderationPhase.getEndTime())){
+      moderationPhase.setStatus(PhaseStatus.OK);
     }
     return moderationPhase;
   }

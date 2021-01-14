@@ -11,7 +11,6 @@ let Calls = {
   DATAMANAGEMENT_BASE_URI: "http://localhost:8083/uu-datamanagement-maing01/11111111111111111111111111111110/",
 
   async call(method, url, dtoIn, clientOptions) {
-    console.log("url ----", url);
     let response = await Plus4U5.Common.Calls.call(method, url, dtoIn, clientOptions);
     return response.data;
   },
@@ -61,7 +60,6 @@ let Calls = {
 
   metadataList(){
     let commandUri = Calls.getCommandUri("metadata/list");
-    console.log("call metadata/list --- ", commandUri);
     return Calls.call("get", commandUri, null, {});
   },
 
@@ -78,6 +76,11 @@ let Calls = {
   processList(dtoIn){
     let commandUri = Calls.getCommandUri("process/list");
     return Calls.call("get", commandUri, dtoIn);
+  },
+
+  createProcess(){
+    let commandUri = Calls.getCommandUri("process/create");
+    return Calls.call("post", commandUri);
   },
 
   exportGSKDocumentToZip(dtoIn) {
