@@ -23,6 +23,11 @@ let Calls = {
     return metadataUri;
   },
 
+  datamanagementClean(){
+    let metadataUri = Calls.call("post", "http://localhost:8083/uu-datamanagement-maing01/11111111111111111111111111111110/clean")
+    return metadataUri;
+  },
+
   metadataEdit(dtoIn){
     let metadataUri = Calls.call("post", "http://localhost:8083/uu-datamanagement-maing01/11111111111111111111111111111110/metadata/update", dtoIn)
     return metadataUri;

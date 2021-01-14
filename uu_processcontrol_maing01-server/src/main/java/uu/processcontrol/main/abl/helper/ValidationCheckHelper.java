@@ -8,23 +8,20 @@ import uu.processcontrol.main.abl.entity.ProcessControl;
 
 @Component
 public class ValidationCheckHelper {
-  private final ZonedDateTime now = ZonedDateTime.now();
-
   public Phase checkValidationPhase(ProcessControl processControl){
+    ZonedDateTime now = ZonedDateTime.now();
     Phase validationPhase = processControl.getPhases().get(1);
-    if(validationPhase.getStatus().equals(PhaseStatus.INIT)
-      && validationPhase.getStartTime().isBefore(now)
-      && validationPhase.getEndTime().isAfter(now)){
+    if(validationPhase.getStatus().equals(PhaseStatus.INIT) && now.isAfter(validationPhase.getStartTime()) && now.isBefore(validationPhase.getEndTime())){
       validationPhase.setStatus(PhaseStatus.RUNNING);
     }
-    if(validationPhase.getStatus().equals(PhaseStatus.RUNNING)){
-      //Here will be datamanagement/validate
-      validationPhase.setStatus(PhaseStatus.OK);
-    }
+    //here will be validation result and if validation result have some messages
+    //Also here will be updating of process with data
+    validationPhase.setStatus(PhaseStatus.OK);
     return validationPhase;
   }
 
   public Phase checkModerationPhase(ProcessControl processControl){
+    ZonedDateTime now = ZonedDateTime.now();
     Phase moderationPhase = processControl.getPhases().get(2);
     Phase validationPhase = processControl.getPhases().get(1);
     if(validationPhase.getStatus().equals(PhaseStatus.OK)

@@ -3,9 +3,9 @@ import UuProcesscontrol from "uu_processcontrol_maing01-hi";
 
 const { shallow } = UU5.Test.Tools;
 
-describe(`UuProcesscontrol.Bricks.HomePage.MetadataTestComponent`, () => {
+describe(`UuProcesscontrol.Bricks.HomePage.ProcessDetails`, () => {
   it(`default props`, () => {
-    const wrapper = shallow(<UuProcesscontrol.Bricks.HomePage.MetadataTestComponent />);
+    const wrapper = shallow(<UuProcesscontrol.Bricks.HomePage.ProcessDetails />);
     expect(wrapper).toMatchSnapshot();
   });
 });
