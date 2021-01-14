@@ -92,8 +92,9 @@ export const ProcessDetails = createComponent({
       return <UU5.Bricks.Link
         download={true}
         href={getUriForExport()}
+        disabled={!(isProcessEnded())}
       >
-        <UU5.Bricks.Button colorSchema="success" content="Export" size="xl" className="process-btn" disabled={!(isProcessEnded())}/>
+        <UU5.Bricks.Button colorSchema={isProcessEnded() ? "success" : "danger"} content="Export" size="xl" className="process-btn" disabled={!(isProcessEnded())}/>
       </UU5.Bricks.Link>
     }
 

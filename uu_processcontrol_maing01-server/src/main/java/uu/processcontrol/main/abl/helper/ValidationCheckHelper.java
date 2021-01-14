@@ -13,10 +13,10 @@ public class ValidationCheckHelper {
     Phase validationPhase = processControl.getPhases().get(1);
     if(validationPhase.getStatus().equals(PhaseStatus.INIT) && now.isAfter(validationPhase.getStartTime()) && now.isBefore(validationPhase.getEndTime())){
       validationPhase.setStatus(PhaseStatus.RUNNING);
+      //here will be validation result and if validation result have some messages we end whole process
+      //Also here will be updating of process with data
+      //datamanagement/validate
     }
-    //here will be validation result and if validation result have some messages we end whole process
-    //Also here will be updating of process with data
-    validationPhase.setStatus(PhaseStatus.OK);
     return validationPhase;
   }
 
@@ -25,6 +25,7 @@ public class ValidationCheckHelper {
     Phase moderationPhase = processControl.getPhases().get(2);
     Phase validationPhase = processControl.getPhases().get(1);
     if(moderationPhase.getStatus().equals(PhaseStatus.INIT) && now.isAfter(moderationPhase.getStartTime()) && now.isBefore(moderationPhase.getEndTime()) && validationPhase.getStatus().equals(PhaseStatus.OK)){
+      //metadata/list and if one is not valid then set NOTOK on Validation and Moderation and if everything is ok then set Validation.phase to OK and moderatinon to running
       moderationPhase.setStatus(PhaseStatus.RUNNING);
     }
 
