@@ -111,8 +111,8 @@ export const ProcessDetails = createComponent({
     //@@viewOff:interface
 
     //@@viewOn:render
+    Calls.processValidate( {id : props.data[0].id});
     return(
-
       <div>
         <UuP.Bricks.RouteContent
           level="3"

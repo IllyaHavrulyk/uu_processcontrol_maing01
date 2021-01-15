@@ -257,7 +257,8 @@ public class ProcessControlAbl {
     }
 
     if(processControl != null){
-      processControl.getPhases().set(1, validationCheckHelper.checkValidationPhase(processControl));
+      processControl = validationCheckHelper.checkValidationPhase(processControl);
+      processControl = validationCheckHelper.checkModerationPhase(processControl);
       processControl = processControlMongoDao.update(processControl);
     }else{
       throw new ProcessControlRuntimeException(Error.PROCESS_DAO_UPDATE_FAILED, ValidationResultUtils.validationResultToAppErrorMap(validationResult));

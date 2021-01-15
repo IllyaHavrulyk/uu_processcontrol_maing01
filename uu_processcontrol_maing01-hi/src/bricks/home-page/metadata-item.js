@@ -85,9 +85,9 @@ export const MetadataItem = createComponent({
     };
 
     function showValidIcon(data){
-      if(data == "true"){
+      if(data === true){
         return("mdi-check");
-      }else if(data == "false"){
+      }else if(data === false){
         return("mdi-backspace");
       }else{
         return("uu5-clock");
@@ -95,9 +95,9 @@ export const MetadataItem = createComponent({
     }
 
     function showValidCssStyle(data){
-      if(data == "true"){
+      if(data === true){
         return "file-icon-valid";
-      }else if(data == "false"){
+      }else if(data === false){
         return "file-icon-invalid";
       }else{
         return "file-icon-checking";
@@ -105,9 +105,9 @@ export const MetadataItem = createComponent({
     }
 
     function showFileValidity(data){
-      if(data == "true"){
+      if(data === true){
         return "file-valid";
-      }else if(data == "false"){
+      }else if(data === false){
         return "file-invalid";
       }else{
         return "file-checking";
@@ -116,7 +116,8 @@ export const MetadataItem = createComponent({
     //@@viewOff:private
 
     //@@viewOn:interface
-    let isValid = props.data.data.valid;
+    let isValid  = props.data.data.valid;
+    console.log(isValid)
     //@@viewOff:interface
 
     //@@viewOn:render

@@ -68,6 +68,11 @@ let Calls = {
     return Calls.call("get",commandUri,dtoIn)
   },
 
+  processValidate(dtoIn){
+    let commandUri = Calls.getCommandUri("process/validate");
+    return Calls.call("post",commandUri,dtoIn)
+  },
+
   processStart(dtoIn){
     let commandUri = Calls.getCommandUri("process/start");
     return Calls.call("post", commandUri, dtoIn);

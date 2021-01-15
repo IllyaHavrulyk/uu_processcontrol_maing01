@@ -28,3 +28,6 @@ const ProcessControlUpdateDtoInType = shape({
 
 })
 
+const metadataListDtoInType = shape({
+
+})
